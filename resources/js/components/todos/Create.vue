@@ -7,7 +7,17 @@
 <script>
 	export default {
 		data: () => ({
-			
-		})
+			inputData: {
+				title: '',
+				category: ''
+			}
+		}),
+		computed: {
+			postData() {
+				return {
+					
+				}
+			}
+		}
 	}
 </script>
