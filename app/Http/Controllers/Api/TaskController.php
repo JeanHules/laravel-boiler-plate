@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -14,7 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        return Task::where('user_id', auth()->user()->id)->get();
     }
 
     /**
@@ -25,7 +26,11 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge([ 
+            'user_id' => auth()->user()->id
+        ]);
+
+        return Task::create($request->all());
     }
 
     /**
@@ -48,7 +53,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->update($request->all());
+
+        return $task->refresh();
     }
 
     /**
@@ -59,6 +67,8 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Task::findOrFail($id)->delete();
+
+        return response('Deleted successfully', 202);
     }
 }

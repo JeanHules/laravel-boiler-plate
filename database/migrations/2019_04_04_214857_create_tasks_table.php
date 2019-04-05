@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
             $table->string('title');
             $table->string('user_id');
             $table->string('category_id')->nullable();
+            $table->boolean('completed')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
