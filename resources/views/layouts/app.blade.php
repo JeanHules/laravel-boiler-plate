@@ -23,6 +23,7 @@
 </head>
 <body>
     <div id="app">
+        @if (auth()->check())
         <nav class="navbar navbar-expand-md navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand font-weight-bold" href="{{ url('/') }}">
@@ -73,6 +74,7 @@
                 </div>
             </div>
         </nav>
+        @endif
 
         <main class="py-4">
             <div class="container">

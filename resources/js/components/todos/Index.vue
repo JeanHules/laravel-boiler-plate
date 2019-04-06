@@ -26,7 +26,7 @@
 				<template v-if="tasks.length">
 					<div class="row">
 						<div class="form-group col-sm-8">
-							<input v-model="searchText" type="text" class="form-control" placeholder="Search your task">
+							<input v-model="searchText" type="text" class="form-control" placeholder="Search your tasks">
 						</div>
 						<div class="col-sm-4">
 							<div class="btn-group d-flex" role="group" aria-label="Basic example">
@@ -40,21 +40,12 @@
 						</div>
 					</div>
 					<ul class="list-group list-group-flush mb-2">
-						<li class="list-group-item pl-0 d-flex justify-content-between" 
+						<li class="list-group-item" 
 							v-for="(task,index) in filterdTasks" 
 							:key="index">
-							<div>
-								<p class="my-0 align-items-top">{{ task.title }}</p>
-							</div>
-							<div class="d-flex">
-								<a @click.prevent="toggleStatus(task)" href="" class="mr-3 text-dark">
-									<i v-if="task.completed" class="fas fa-check-square"></i>
-									<i v-else class="far fa-square"></i>
-								</a>
-								<a @click.prevent="confirmDelete(task)" href=""><i class="fas fa-trash"></i></a>
-							</div>
+							<todo-item :task="task" @deleteTask="deleteTask(task)" @toggleStatus="toggleStatus(task)"></todo-item>
 						</li>
-						<li class="list-group-item px-0">
+						<li class="list-group-item">
 							<a v-if="!showCreate" @click.prevent="showCreate =! showCreate" href=""><i class="fas fa-plus mr-2"></i>Add task</a>
 							<task-form v-if="showCreate" @hide="showCreate = false" @updated="getTasks"></task-form>
 						</li>
@@ -69,10 +60,11 @@
 <script>
 	import NiceDate from '../../mixins/NiceDate';
 	import TaskForm from './Form';
+	import TodoItem from './TodoItem'
 	export default {
 		mixins: [NiceDate],
 		components: {
-			TaskForm
+			TaskForm, TodoItem
 		},
 		data: () => ({
 			searchText: '',
@@ -80,7 +72,8 @@
 			tasks: [],
 			today: new Date(),
 			firstTime: false,
-			showCreate: false
+			showCreate: false,
+			showEdit: false
 		}),
 		computed: {
 			filterdTasks() {
@@ -116,14 +109,6 @@
 						console.log(response.data);
 					});
 			},
-			deleteTask(selectedTask) {
-				axios.delete(`/api/tasks/${selectedTask.id}`)
-					.then(response => {
-						this.tasks = this.tasks.filter(task => {
-							return task.id != selectedTask.id;
-						});
-					});
-			},
 			confirmDelete(task) {
 				swal({
 					title: 'Are you sure?',
@@ -134,8 +119,18 @@
 					dangerMode: true,
 				})
 				.then((willDelete) => {
-				  this.deleteTask(task);
+					if (willDelete) {
+						this.deleteTask(task);
+					}
 				});
+			},
+			deleteTask(selectedTask) {
+				axios.delete(`/api/tasks/${selectedTask.id}`)
+					.then(response => {
+						this.tasks = this.tasks.filter(task => {
+							return task.id != selectedTask.id;
+						});
+					});
 			}
 		},
 		created() {
