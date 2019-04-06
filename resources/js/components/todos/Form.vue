@@ -8,19 +8,21 @@
 				<a @click.prevent="submit" href="" class="btn btn-primary font-weight-bold mr-2">{{ buttonText }}</a>
 				<a @click.prevent="$emit('hide')" href="" class="text-dark">Cancel</a>
 			</div>
-			<div>
-				<a href="" class="text-dark"><i class="fas fa-layer-group"></i> Tags</a>
-			</div>
+			<category-list></category-list>
 		</div>
 	</div>
 </template>
 
 <script>
+	import CategoryList from '../categories/Index'
 	export default {
 		props: {
 			task: {
 				required: false
 			}
+		},
+		components: {
+			CategoryList
 		},
 		data: () => ({
 			inputData: {

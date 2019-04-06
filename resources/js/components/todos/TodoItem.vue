@@ -20,7 +20,6 @@
 		</div>
 		<todo-form v-else :task="task" @hide="toggleForm"></todo-form>
 	</div>
-
 </template>
 
 <script>

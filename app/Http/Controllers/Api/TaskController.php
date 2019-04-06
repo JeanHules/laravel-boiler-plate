@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Task;
 use App\Http\Requests\TaskRequest;
+use App\Http\Resources\TaskResource;
 
 class TaskController extends Controller
 {
@@ -16,7 +17,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::where('user_id', auth()->user()->id)->get();
+        $task = Task::where('user_id', auth()->user()->id)->get();
+
+        return TaskResource::collection($task);
     }
 
     /**
@@ -31,7 +34,7 @@ class TaskController extends Controller
             'user_id' => auth()->user()->id
         ]);
 
-        return Task::create($request->all());
+        return new TaskResource(Task::create($request->all()));
     }
 
     /**
@@ -57,7 +60,7 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->update($request->all());
 
-        return $task->refresh();
+        return TaskResource($task->refresh());
     }
 
     /**

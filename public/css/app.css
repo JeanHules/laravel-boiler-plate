@@ -15027,3 +15027,7 @@ a.text-dark:focus {
   text-decoration: line-through;
 }
 
+.dropdown-toggle::after {
+  display: none;
+}
+
