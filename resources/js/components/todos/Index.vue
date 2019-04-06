@@ -4,13 +4,13 @@
 			<div class="card card-body shadow-sm border-0" style="height:100vh">
 				<template>
 					<ul class="list-unstyled">
-						<li>
-							<h4>Today, <span class="welcome-date">{{ today | niceDate }}</span></h4>
+						<li class="px-0">
+							<h5>Today, <span class="welcome-date">{{ today | niceDate }}</span></h5>
 						</li>
-						<li v-if="tasks.length == 0 && !firstTime">
+						<li v-if="tasks.length == 0 && !firstTime" class="px-0">
 							<a @click.prevent="firstTime = true" href=""><i class="fas fa-plus mr-2"></i>Add task</a>
 						</li>
-						<li v-if="firstTime && tasks.length == 0" class="mt-3">
+						<li v-if="firstTime && tasks.length == 0" class="mt-3 px-0">
 							<task-form @hide="firstTime = false" @updated="getTasks"></task-form>
 						</li>
 					</ul>
@@ -40,12 +40,12 @@
 						</div>
 					</div>
 					<ul class="list-group list-group-flush mb-2">
-						<li class="list-group-item" 
+						<li class="list-group-item px-0" 
 							v-for="(task,index) in filterdTasks" 
 							:key="index">
 							<todo-item :task="task" @deleteTask="deleteTask(task)" @toggleStatus="toggleStatus(task)"></todo-item>
 						</li>
-						<li class="list-group-item">
+						<li class="list-group-item px-0">
 							<a v-if="!showCreate" @click.prevent="showCreate =! showCreate" href=""><i class="fas fa-plus mr-2"></i>Add task</a>
 							<task-form v-if="showCreate" @hide="showCreate = false" @updated="getTasks"></task-form>
 						</li>

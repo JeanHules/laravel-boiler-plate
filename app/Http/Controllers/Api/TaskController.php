@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Task;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 {
@@ -24,7 +25,7 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
         $request->merge([ 
             'user_id' => auth()->user()->id

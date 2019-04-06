@@ -1810,6 +1810,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     task: {
@@ -1830,6 +1833,9 @@ __webpack_require__.r(__webpack_exports__);
         title: this.inputData.title,
         category_id: this.inputData.category
       };
+    },
+    buttonText: function buttonText() {
+      return this.task ? 'Save' : 'Add Task';
     }
   },
   methods: {
@@ -1837,17 +1843,25 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.inputData.title.length > 0) {
-        axios.post("/api/tasks", this.postData).then(function (response) {
-          _this.$emit('hide');
+        if (this.task) {
+          axios.put("/api/tasks/".concat(this.task.id), this.postData).then(function (response) {
+            _this.$emit('hide');
 
-          _this.$emit('updated');
-        });
+            _this.$emit('updated');
+          });
+        } else {
+          axios.post("/api/tasks", this.postData).then(function (response) {
+            _this.$emit('hide');
+
+            _this.$emit('updated');
+          });
+        }
       }
     }
   },
   created: function created() {
     if (this.task) {
-      this.inputData.task = this.task;
+      this.inputData = this.task;
     }
   }
 });
@@ -2022,6 +2036,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form */ "./resources/js/components/todos/Form.vue");
+/* harmony import */ var _mixins_NiceDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/NiceDate */ "./resources/js/mixins/NiceDate.js");
 //
 //
 //
@@ -2037,10 +2053,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_NiceDate__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  components: {
+    TodoForm: _Form__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
     task: {
       required: true
+    }
+  },
+  data: function data() {
+    return {
+      showForm: false
+    };
+  },
+  methods: {
+    toggleForm: function toggleForm() {
+      return this.showForm = !this.showForm;
     }
   }
 });
@@ -44775,7 +44817,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Add Task")]
+          [_vm._v(_vm._s(_vm.buttonText))]
         ),
         _vm._v(" "),
         _c(
@@ -44792,11 +44834,25 @@ var render = function() {
           },
           [_vm._v("Cancel")]
         )
-      ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0)
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("a", { staticClass: "text-dark", attrs: { href: "" } }, [
+        _c("i", { staticClass: "fas fa-layer-group" }),
+        _vm._v(" Tags")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -44829,8 +44885,8 @@ var render = function() {
         [
           [
             _c("ul", { staticClass: "list-unstyled" }, [
-              _c("li", [
-                _c("h4", [
+              _c("li", { staticClass: "px-0" }, [
+                _c("h5", [
                   _vm._v("Today, "),
                   _c("span", { staticClass: "welcome-date" }, [
                     _vm._v(_vm._s(_vm._f("niceDate")(_vm.today)))
@@ -44839,7 +44895,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm.tasks.length == 0 && !_vm.firstTime
-                ? _c("li", [
+                ? _c("li", { staticClass: "px-0" }, [
                     _c(
                       "a",
                       {
@@ -44862,7 +44918,7 @@ var render = function() {
               _vm.firstTime && _vm.tasks.length == 0
                 ? _c(
                     "li",
-                    { staticClass: "mt-3" },
+                    { staticClass: "mt-3 px-0" },
                     [
                       _c("task-form", {
                         on: {
@@ -45026,7 +45082,7 @@ var render = function() {
                     _vm._l(_vm.filterdTasks, function(task, index) {
                       return _c(
                         "li",
-                        { key: index, staticClass: "list-group-item" },
+                        { key: index, staticClass: "list-group-item px-0" },
                         [
                           _c("todo-item", {
                             attrs: { task: task },
@@ -45046,7 +45102,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "li",
-                      { staticClass: "list-group-item" },
+                      { staticClass: "list-group-item px-0" },
                       [
                         !_vm.showCreate
                           ? _c(
@@ -45113,55 +45169,93 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex justify-content-between" }, [
-    _c("div", [
-      _c(
-        "p",
-        {
-          staticClass: "my-0",
-          class: [_vm.task.completed ? "line-through" : ""]
-        },
-        [_vm._v(_vm._s(_vm.task.title))]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "d-flex" }, [
-      _c(
-        "a",
-        {
-          staticClass: "mr-3 text-dark",
-          attrs: { href: "" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.$emit("toggleStatus", _vm.task)
-            }
-          }
-        },
-        [
-          _vm.task.completed
-            ? _c("i", { staticClass: "fas fa-check-square" })
-            : _c("i", { staticClass: "far fa-square" })
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          attrs: { href: "" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.$emit("deleteTask", _vm.task)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-trash" })]
-      )
-    ])
-  ])
+  return _c(
+    "div",
+    [
+      !_vm.showForm
+        ? _c("div", { staticClass: "d-flex justify-content-between" }, [
+            _c(
+              "div",
+              {
+                staticClass: "w-75",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.toggleForm($event)
+                  }
+                }
+              },
+              [
+                _c(
+                  "h6",
+                  {
+                    staticClass: "my-0",
+                    class: [_vm.task.completed ? "line-through" : ""]
+                  },
+                  [_vm._v(_vm._s(_vm.task.title))]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "welcome-date d-flex" }, [
+                  _c("p", { staticClass: "my-0 text-muted mr-3" }, [
+                    _vm._v(_vm._s(_vm._f("niceDate")(_vm.task.created_at)))
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "mr-3 text-dark",
+                  attrs: { href: "" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("toggleStatus", _vm.task)
+                    }
+                  }
+                },
+                [
+                  _vm.task.completed
+                    ? _c("i", { staticClass: "fas fa-check-square" })
+                    : _c("i", { staticClass: "far fa-square" })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  attrs: { href: "" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("deleteTask", _vm.task)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fas fa-trash" })]
+              )
+            ])
+          ])
+        : _c("todo-form", {
+            attrs: { task: _vm.task },
+            on: { hide: _vm.toggleForm }
+          })
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [_c("span", [_vm._v("#me ")])])
+  }
+]
 render._withStripped = true
 
 

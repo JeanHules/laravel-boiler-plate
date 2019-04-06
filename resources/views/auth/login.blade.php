@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card border-0 shadow-sm">
-                <div class="card-body px-5">
+                <div class="card-body px-lg-5 px-4">
                     <h4 class="text-center py-3 font-weight-bold">Welcome back, Login Here!</h4>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
