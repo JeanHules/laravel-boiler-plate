@@ -6,7 +6,7 @@
 				<div class="welcome-date d-flex">
 					<p class="my-0 text-muted mr-3">{{ task.created_at | niceDate }}</p>
 					<div>
-						<span>#me </span>
+						<span class="badge badge-light">{{ task.category && task.category.title }}</span>
 					</div>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 				<a @click.prevent="$emit('deleteTask', task)" href=""><i class="fas fa-trash"></i></a>
 			</div>
 		</div>
-		<todo-form v-else :task="task" @hide="toggleForm"></todo-form>
+		<todo-form v-else :task="task" @hide="toggleForm" @updated="$emit('updated')"></todo-form>
 	</div>
 </template>
 

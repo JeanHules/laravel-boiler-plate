@@ -43,7 +43,7 @@
 						<li class="list-group-item px-0" 
 							v-for="(task,index) in filterdTasks" 
 							:key="index">
-							<todo-item :task="task" @deleteTask="deleteTask(task)" @toggleStatus="toggleStatus(task)"></todo-item>
+							<todo-item :task="task" @deleteTask="deleteTask(task)" @toggleStatus="toggleStatus(task)" @updated="getTasks"></todo-item>
 						</li>
 						<li class="list-group-item px-0">
 							<a v-if="!showCreate" @click.prevent="showCreate =! showCreate" href=""><i class="fas fa-plus mr-2"></i>Add task</a>

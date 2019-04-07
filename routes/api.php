@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function() {
 	Route::apiResource('tasks', 'Api\TaskController');
+	Route::get('categories', 'Api\CategoryController@index');
 });

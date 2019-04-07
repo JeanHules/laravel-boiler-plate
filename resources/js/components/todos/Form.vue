@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<span @click.prevent="selectedCategory = ''" class="badge badge-light">{{ selectedCategory.title }}</span>
 		<div class="form-group">
 			<input v-model="inputData.title" @keyup.enter="submit" type="text" class="form-control">
 		</div>
@@ -8,11 +9,11 @@
 				<a @click.prevent="submit" href="" class="btn btn-primary font-weight-bold mr-2">{{ buttonText }}</a>
 				<a @click.prevent="$emit('hide')" href="" class="text-dark">Cancel</a>
 			</div>
-			<a class="text-dark" href="">
+			<a @click.prevent="toggleCategory"class="text-dark" href="">
 				<i class="fas fa-layer-group"></i> Tags
 			</a>
 		</div>
-		<category-list></category-list>
+		<category-list v-if="showCategory" @hideCategories="toggleCategory" @selectedCategory="mapCategory"></category-list>
 	</div>
 </template>
 
@@ -28,6 +29,8 @@
 			CategoryList
 		},
 		data: () => ({
+			showCategory: false,
+			selectedCategory: '',
 			inputData: {
 				title: '',
 				category_id: ''
@@ -37,7 +40,7 @@
 			postData() {
 				return {
 					title: this.inputData.title,
-					category_id: this.inputData.category	
+					category_id: this.selectedCategory.id
 				}
 			},
 			buttonText() {
@@ -60,9 +63,13 @@
 								this.$emit('updated');
 							})
 					}
-
 				}
-
+			},
+			toggleCategory() {
+				return this.showCategory =! this.showCategory;
+			},
+			mapCategory(category) {
+				this.selectedCategory = category;
 			}
 		},
 		created() {
