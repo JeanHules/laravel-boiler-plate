@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+Route::group(['middleware' => ['auth']], function() {
+	Route::get('{vue_capture?}', function () {
+		return view('layouts.app');
+	})->where('vue_capture', '[\/\w\.-]*');
 });
+
+
+Route::get('/home', 'HomeController@index')->name('home');
