@@ -8,8 +8,11 @@
 				<a @click.prevent="submit" href="" class="btn btn-primary font-weight-bold mr-2">{{ buttonText }}</a>
 				<a @click.prevent="$emit('hide')" href="" class="text-dark">Cancel</a>
 			</div>
-			<category-list></category-list>
+			<a class="text-dark" href="">
+				<i class="fas fa-layer-group"></i> Tags
+			</a>
 		</div>
+		<category-list></category-list>
 	</div>
 </template>
 
