@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', 'AuthController@login')->name('auth.login');
+Route::post('register', 'AuthController@register')->name('auth.register');
+
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('logout','AuthController@logout')->name('auth.logout');
+    Route::get('get-todos', 'TodoListController@getTodoItems')->name('todo.get');
+    Route::post('filter-todos', 'TodoListController@getTodoItemsBySearch')->name('todo.get');
+    Route::post('create-todo','TodoListController@createTodoItem')->name('todo.create');
+    Route::post('update-todo','TodoListController@updateTodoItem')->name('todo.update');
+    Route::get('delete-todo/{id}','TodoListController@removeTodoItem')->name('todo.delete');
 });
